@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mixing Line Live</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="mast">
+        <div class="logo-chip">
+            <img src="images/logos/CirtecLogo.png" alt="Cirtec Medical">
+        </div>
+        <div class="mast-sep"></div>
+        <div class="mast-title">Mixing Line Live</div>
+        <div class="mast-tools">
+            <div class="live-pill" id="livePill"><i></i><span id="liveLabel">Live demo</span></div>
+            <div class="mast-sep"></div>
+            <div class="clock" id="plantClock">10:00:00 AM</div>
+            <div class="sample-note">Samples every 10 seconds</div>
+            <div class="mast-sep"></div>
+            <button type="button" class="mast-btn" id="playPause">Pause</button>
+        </div>
+    </header>
+
+    <div class="deck">
+        <aside class="rail" id="rail" aria-label="Line status"></aside>
+
+        <main class="stage">
+            <button type="button" class="alert is-ok" id="alert">
+                <span class="alert-kicker" id="alertKicker">Line</span>
+                <span class="alert-text" id="alertText">All watched values are inside the example limits.</span>
+            </button>
+
+            <div class="stage-head">
+                <div>
+                    <div class="batch-line" id="batchLine">Batch 1042 · EPDM Gasket - Final</div>
+                    <div class="phase-line" id="phaseLine">Weighing</div>
+                </div>
+                <ol class="steps" id="steps">
+                    <li data-step="weigh">Weigh</li>
+                    <li data-step="charge">Charge</li>
+                    <li data-step="mix">Mix</li>
+                    <li data-step="alarm">Alarm</li>
+                    <li data-step="mill">Mill</li>
+                </ol>
+            </div>
+
+            <div class="flow">
+                <button type="button" class="unit" data-id="weight-scale" id="unit-weight-scale">
+                    <div class="unit-kicker">Charge</div>
+                    <div class="unit-name">Weight Scale</div>
+                    <div class="big" id="weight-value">—</div>
+                    <div class="meter" aria-hidden="true"><span id="weight-meter"></span></div>
+                    <div class="sub" id="weight-target">Target 186.0 lb</div>
+                    <div class="meta" id="weight-probe"></div>
+                    <div class="reason" id="weight-reason"></div>
+                </button>
+
+                <div class="connector" id="conn-charge" aria-hidden="true"><i></i><i></i><i></i></div>
+
+                <div class="mixer-col">
+                    <button type="button" class="unit unit-processor" data-id="data-processor" id="unit-data-processor">
+                        <div class="unit-kicker">Moriyama WDX110-400MWA-S</div>
+                        <div class="unit-name">Main Data Processor</div>
+                        <div class="recipe" id="proc-recipe">EPDM Gasket - Final</div>
+                        <div class="proc-grid">
+                            <div><span>Mix time</span><strong id="proc-mix">0:00</strong></div>
+                            <div><span>Time ran</span><strong id="proc-ran">0:00</strong></div>
+                            <div><span>Speed</span><strong id="proc-speed">0 rpm</strong></div>
+                            <div><span>Power</span><strong id="proc-kw">0 kW</strong></div>
+                        </div>
+                        <div class="reason" id="proc-reason"></div>
+                    </button>
+                    <button type="button" class="unit unit-cooling" data-id="mixer-cooling" id="unit-mixer-cooling">
+                        <div class="cooling-head">
+                            <div>
+                                <div class="unit-kicker">Cooling</div>
+                                <div class="unit-name">Four zones</div>
+                            </div>
+                            <svg class="mixer-svg" viewBox="0 0 148 78" aria-hidden="true">
+                                <rect class="chamber" x="4" y="8" width="140" height="62" rx="12"></rect>
+                                <g class="rotor rotor-a">
+                                    <ellipse cx="52" cy="39" rx="18" ry="22"></ellipse>
+                                    <rect x="47" y="18" width="10" height="42" rx="4"></rect>
+                                </g>
+                                <g class="rotor rotor-b">
+                                    <ellipse cx="96" cy="39" rx="18" ry="22"></ellipse>
+                                    <rect x="78" y="34" width="36" height="10" rx="4"></rect>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="zones">
+                            <div class="zone" id="zone-fw"><span>Floating weight</span><strong id="zone-fw-val"></strong></div>
+                            <div class="zone" id="zone-ch"><span>Mixing chamber</span><strong id="zone-ch-val"></strong></div>
+                            <div class="zone" id="zone-fr"><span>Front rotor</span><strong id="zone-fr-val"></strong></div>
+                            <div class="zone" id="zone-rr"><span>Rear rotor</span><strong id="zone-rr-val"></strong></div>
+                        </div>
+                        <div class="reason" id="cool-reason"></div>
+                    </button>
+                </div>
+
+                <div class="connector" id="conn-dump" aria-hidden="true"><i></i><i></i><i></i></div>
+
+                <div class="mill-col">
+                    <button type="button" class="unit" data-id="takeoff-mill" id="unit-takeoff-mill">
+                        <div class="unit-kicker">Downstream</div>
+                        <div class="unit-name">Take Off Mill</div>
+                        <div class="rolls" aria-hidden="true"><i></i><i></i></div>
+                        <div class="roll-read">
+                            <div><span>Front roll</span><strong id="roll-front"></strong></div>
+                            <div><span>Back roll</span><strong id="roll-back"></strong></div>
+                        </div>
+                        <div class="reason" id="mill-reason"></div>
+                    </button>
+                    <button type="button" class="unit" data-id="mill-inverter" id="unit-mill-inverter">
+                        <div class="unit-kicker">Drive</div>
+                        <div class="unit-name">Mill Inverter</div>
+                        <div class="big" id="inv-kw">0 kW</div>
+                        <div class="reason" id="inv-reason"></div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="utilities">
+                <button type="button" class="unit" data-id="pump-tank" id="unit-pump-tank">
+                    <div class="unit-kicker">Utilities</div>
+                    <div class="unit-name">Pump Tank</div>
+                    <div class="util-grid">
+                        <div><span>Water pressure</span><strong id="pump-pressure"></strong></div>
+                        <div><span>Water temp</span><strong id="pump-temp"></strong></div>
+                        <div><span>Air pressure</span><strong id="pump-air"></strong></div>
+                        <div><span>Filter differential</span><strong id="pump-dp"></strong></div>
+                    </div>
+                    <div class="reason" id="pump-reason"></div>
+                </button>
+                <button type="button" class="unit" data-id="power-station" id="unit-power-station">
+                    <div class="unit-kicker">Utilities</div>
+                    <div class="unit-name">Main Power Station</div>
+                    <div class="util-grid">
+                        <div><span>Ambient</span><strong id="power-ambient"></strong></div>
+                        <div><span>Plant power</span><strong id="power-kw"></strong></div>
+                    </div>
+                    <div class="hint">Duke Energy feed is not connected in this demo.</div>
+                    <div class="reason" id="power-reason"></div>
+                </button>
+            </div>
+            <p class="disclaimer">Simulated data. Example limits are not plant standards. A full batch is compressed to about 40 seconds.</p>
+        </main>
+
+        <aside class="detail" id="detail" aria-label="Component detail"></aside>
+    </div>
+
+    <script src="js/sim.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
